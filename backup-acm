@@ -1,0 +1,49 @@
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: selective-acm-cluster-backup
+  namespace: oadp-operator
+spec:
+  # Exclude specific namespace
+  excludedNamespaces:
+    - multiclusterhub  # Exclude all resources in the MultiClusterHub namespace
+  
+  # Include CRDs and other resources by specifying API groups and resource types
+  includedResources:
+    - secrets
+    - configmaps
+    - customresourcedefinitions
+
+  # Label selector for secrets and configmaps
+  labelSelector:
+    matchExpressions:
+      - {key: cluster.open-cluster-management.io/type, operator: Exists}
+      - {key: hive.openshift.io/secret-type, operator: Exists}
+      - {key: cluster.open-cluster-management.io/backup, operator: Exists}
+
+  # API group filters for including specific CRDs
+  labelSelector:
+    matchExpressions:
+      - {key: apiVersion, operator: In, values: ["*.open-cluster-management.io", "*.hive.openshift.io", "argoproj.io", "app.k8s.io", "core.observatorium.io", "hive.openshift.io", "agent-install.openshift.io"]}
+
+  # Excluding specific CRDs by API groups
+  excludedResources:
+    - internal.open-cluster-management.io
+    - operator.open-cluster-management.io
+    - work.open-cluster-management.io
+    - search.open-cluster-management.io
+    - admission.hive.openshift.io
+    - proxy.open-cluster-management.io
+    - action.open-cluster-management.io
+    - view.open-cluster-management.io
+    - clusterview.open-cluster-management.io
+    - velero.io
+    - clustermanagementaddon.addon.open-cluster-management.io
+    - backupschedule.cluster.open-cluster-management.io
+    - restore.cluster.open-cluster-management.io
+    - clusterclaim.cluster.open-cluster-management.io
+    - discoveredcluster.discovery.open-cluster-management.io
+    - placementdecisions.cluster.open-cluster-management.io
+
+  snapshotVolumes: true
+  ttl: 24h0m0s

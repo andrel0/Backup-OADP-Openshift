@@ -15,10 +15,10 @@ done
 
 #!/bin/bash
 
-# Obtener nombres de CRDs que terminan con .open-cluster-management
+# Obtener nombres de secrets que terminan con .open-cluster-management
 secrets=$(oc get secrets -o jsonpath='{.items[?(@.spec.group=="open-cluster-management.io")].metadata.name}')
 
-# Listar los recursos de cada CRD
+# Listar los recursos de cada secret
 for crd in $secrets; do
     echo "Listando recursos para CRD $secrets"
     oc get $secrets
@@ -29,10 +29,10 @@ done
 
 #!/bin/bash
 
-# Obtener nombres de CRDs que terminan con .open-cluster-management
+# Obtener nombres de Configmaps que terminan con .open-cluster-management
 configmaps=$(oc get configmaps -o jsonpath='{.items[?(@.spec.group=="open-cluster-management.io")].metadata.name}')
 
-# Listar los recursos de cada CRD
+# Listar los recursos de cada configmap
 for crd in $configmaps; do
     echo "Listando recursos para CRD $configmaps"
     oc get $configmaps

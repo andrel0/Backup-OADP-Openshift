@@ -20,7 +20,7 @@ secrets=$(oc get secrets -o jsonpath='{.items[?(@.spec.group=="open-cluster-mana
 
 # Listar los recursos de cada secret
 for crd in $secrets; do
-    echo "Listando recursos para CRD $secrets"
+    echo "Listando recursos para secret $secrets"
     oc get $secrets
     echo "-----------------------------"
 done
@@ -34,7 +34,7 @@ configmaps=$(oc get configmaps -o jsonpath='{.items[?(@.spec.group=="open-cluste
 
 # Listar los recursos de cada configmap
 for crd in $configmaps; do
-    echo "Listando recursos para CRD $configmaps"
+    echo "Listando recursos para configmap $configmaps"
     oc get $configmaps
     echo "-----------------------------"
 done
